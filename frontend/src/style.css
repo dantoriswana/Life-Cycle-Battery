@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 :root {
   --bg-primary: #0f111a;
   --bg-secondary: #1a1d2d;
@@ -256,18 +257,126 @@ input:focus {
 
 /* Spinner */
 .spinner {
+=======
+/* ===== Base Styles for RUL Predictor Dashboard ===== */
+
+/* Material Symbols configuration */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Spectrum gradient border for KPI cards */
+.spectrum-gradient-border {
+  position: relative;
+  background: #ffffff;
+  border-radius: 0.75rem;
+}
+
+.spectrum-gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  background: linear-gradient(90deg, #005ac2, #8455ef, #b75b00, #ba1a1a);
+  border-radius: 0.8rem;
+}
+
+/* Spectrum gradient for buttons */
+.spectrum-gradient {
+  background: linear-gradient(135deg, #2563eb 0%, #a855f7 50%, #f97316 100%);
+}
+
+/* SVG chart grid lines */
+.chart-grid-line {
+  stroke: #e5eeff;
+  stroke-width: 1.5px;
+}
+
+/* Glass panel effect */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+}
+
+/* Page transition animation */
+.page-enter {
+  animation: pageEnter 0.35s ease-out;
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Number count-up animation shimmer */
+.value-animate {
+  animation: shimmer 0.6s ease-out;
+}
+
+@keyframes shimmer {
+  0% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+/* Active nav link styling */
+.nav-link-active {
+  color: #2563eb !important;
+}
+
+.nav-link-inactive {
+  color: #64748b !important;
+}
+
+/* Mobile nav active state */
+.mobile-nav-active {
+  color: #2563eb !important;
+}
+
+.mobile-nav-active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  width: 4px;
+  height: 4px;
+  background: #2563eb;
+  border-radius: 50%;
+}
+
+.mobile-nav-inactive {
+  color: #94a3b8 !important;
+}
+
+.mobile-nav-inactive::after {
+  display: none;
+}
+
+/* Spinner */
+.predict-spinner {
+>>>>>>> c14b82d (Update Ui)
   width: 20px;
   height: 20px;
   border: 3px solid rgba(255,255,255,0.3);
   border-radius: 50%;
   border-top-color: white;
+<<<<<<< HEAD
   animation: spin 1s ease-in-out infinite;
+=======
+  animation: spin 0.8s ease-in-out infinite;
+  display: inline-block;
+>>>>>>> c14b82d (Update Ui)
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
+<<<<<<< HEAD
 .hidden {
   display: none !important;
 }
@@ -418,4 +527,85 @@ input:focus {
   .dashboard-container {
     padding: 2rem 1rem;
   }
+=======
+/* SOH Range Slider Custom Styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  background: #d3e4fe;
+  border-radius: 4px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #0058be;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 88, 190, 0.4);
+  transition: transform 0.15s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #0058be;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0, 88, 190, 0.4);
+}
+
+/* Smooth hover for table rows */
+.prediction-row {
+  transition: background-color 0.15s ease;
+}
+
+/* Tooltip styling */
+.chart-tooltip {
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+/* Body min-height for mobile */
+body {
+  min-height: max(884px, 100dvh);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #eff4ff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c2c6d6;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #727785;
+}
+
+/* Hide number input spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+>>>>>>> c14b82d (Update Ui)
 }
