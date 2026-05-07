@@ -2,11 +2,18 @@
 export const DATASET = {
   totalCycles: 14268,
   // Model metrics (from final synchronized training)
-  mae: 1045.04,
-  mse: 1821210.51,
-  rmse: 1349.52,
-  r2: 0.8916
+  mae: 806.02,
+  mse: 1071013.19,
+  rmse: 1034.90,
+  r2: 0.9362
 };
+
+// ===== Feature Importance (from XGBoost analysis) =====
+export const FEATURE_IMPORTANCE = [
+  { name: 'Voltage (V)', value: 85.12 },
+  { name: 'IRT (mOhm)', value: 10.45 },
+  { name: 'CCA (A)', value: 4.43 }
+];
 
 // ===== Validation samples (Actual vs Predicted) for charts =====
 export const VALIDATION_DATA = [
@@ -46,4 +53,9 @@ export function getPredictions() {
 export function getPredictionCount() {
   // Use length of history or a separate counter if preferred
   return predictionHistory.length;
+}
+
+export function clearHistory() {
+  predictionHistory = [];
+  localStorage.removeItem(STORAGE_KEY);
 }

@@ -1,22 +1,22 @@
-import { addPrediction } from '../store.js';
+import { addPrediction, clearHistory } from '../store.js';
 
 // Last prediction result (session state)
 let lastResult = null;
 
 export function renderInputs() {
 
-    // Build result HTML
+  // Build result HTML
   let resultHTML = '';
   if (lastResult) {
     const r = lastResult;
     const statusColor = r.status === 'Normal' ? 'green' : r.status === 'Peringatan' ? 'orange' : 'red';
-    const statusIcon = r.status === 'Normal' ? 'check_circle' : r.status === 'Peringatan' ? 'warning' : 'error';
+    const statusIcon = r.status === 'Normal' ? 'check_circle' : r.status === 'Peringatan' ? 'warning' : 'dangerous';
     const statusIndo = r.status;
-    
+
     const recTitle = r.status === 'Normal' ? 'Baterai dalam kondisi baik'
       : r.status === 'Peringatan' ? 'Persiapkan penggantian'
-      : 'Ganti segera';
-      
+        : 'Ganti segera';
+
     const recDesc = r.status === 'Normal'
       ? 'Telemetri saat ini menunjukkan performa optimal. SOH di atas ambang batas normal.'
       : r.status === 'Peringatan'
@@ -70,9 +70,9 @@ export function renderInputs() {
           <div>
             <span class="font-label-caps text-label-caps text-on-surface-variant">SENSOR INPUT</span>
             <div class="mt-sm space-y-xs text-sm">
-              <p>Kapasitas: <span class="font-mono-data font-bold">${r.inputCapacity} Ah</span></p>
-              <p>V-Drop: <span class="font-mono-data font-bold">${r.inputVd} V</span></p>
-              <p>Min-V: <span class="font-mono-data font-bold">${r.inputMinV} V</span></p>
+              <p>Voltage: <span class="font-mono-data font-bold">${r.inputVoltage} V</span></p>
+              <p>IRT: <span class="font-mono-data font-bold">${r.inputIrt} mΩ</span></p>
+              <p>CCA: <span class="font-mono-data font-bold">${r.inputCca}</span></p>
             </div>
           </div>
         </div>
@@ -92,23 +92,29 @@ export function renderInputs() {
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
       <section class="lg:col-span-5 flex flex-col gap-lg">
         <div class="bg-white p-lg rounded-xl shadow-sm border border-outline-variant/30">
-          <div class="mb-lg">
-            <h2 class="font-h2 text-h2 text-on-surface mb-xs">Input Data Sensor</h2>
-            <p class="font-body-md text-on-surface-variant text-sm">AI akan mengestimasi SOH dan RUL dari data sensor berikut.</p>
+          <div class="mb-lg flex justify-between items-start">
+            <div>
+              <h2 class="font-h2 text-h2 text-on-surface mb-xs">Input Data Sensor</h2>
+              <p class="font-body-md text-on-surface-variant text-xs">Memprediksi SOH dan RUL dari data sensor.</p>
+            </div>
+            <button id="reset-btn" class="text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider" title="Reset semua data">
+              <span class="material-symbols-outlined text-[14px]">refresh</span>
+              Reset
+            </button>
           </div>
           <form id="prediction-form" class="space-y-md">
             <div class="space-y-xs">
-              <label class="font-label-caps text-label-caps text-outline">KAPASITAS TERUKUR (Ah)</label>
-              <input id="inp-capacity" class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-md py-sm focus:ring-2 focus:ring-primary outline-none" placeholder="misal: 4.50" step="0.01" type="number" required />
+              <label class="font-label-caps text-label-caps text-outline">VOLTAGE (V)</label>
+              <input id="inp-voltage" class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-md py-sm focus:ring-2 focus:ring-primary outline-none" placeholder="misal: 12.8" step="0.01" type="number" required />
             </div>
             <div class="grid grid-cols-2 gap-md">
               <div class="space-y-xs">
-                <label class="font-label-caps text-label-caps text-outline">V-DROP (V)</label>
-                <input id="inp-vdrop" class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-md py-sm focus:ring-2 focus:ring-primary outline-none" placeholder="0.49" step="0.01" type="number" required />
+                <label class="font-label-caps text-label-caps text-outline">IRT (mΩ)</label>
+                <input id="inp-irt" class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-md py-sm focus:ring-2 focus:ring-primary outline-none" placeholder="12.5" step="0.1" type="number" required />
               </div>
               <div class="space-y-xs">
-                <label class="font-label-caps text-label-caps text-outline">MIN VOLTAGE (V)</label>
-                <input id="inp-minv" class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-md py-sm focus:ring-2 focus:ring-primary outline-none" placeholder="12.9" step="0.01" type="number" required />
+                <label class="font-label-caps text-label-caps text-outline">CCA</label>
+                <input id="inp-cca" class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-md py-sm focus:ring-2 focus:ring-primary outline-none" placeholder="80" step="1" type="number" required />
               </div>
             </div>
             <div id="form-error" class="hidden p-sm rounded-lg bg-error-container text-on-error-container text-sm flex items-center gap-sm">
@@ -117,7 +123,7 @@ export function renderInputs() {
             </div>
             <button id="predict-btn" class="w-full spectrum-gradient text-white font-h3 text-h3 py-md rounded-xl shadow-lg hover:shadow-xl active:scale-95 transition-all duration-200 mt-md flex items-center justify-center gap-2" type="submit">
               <span class="material-symbols-outlined">psychology</span>
-              <span id="predict-btn-text">Analisis dengan AI</span>
+              <span id="predict-btn-text">Mulai Prediksi</span>
             </button>
           </form>
         </div>
@@ -132,7 +138,18 @@ export function renderInputs() {
 
 export function initInputsPage() {
   const form = document.getElementById('prediction-form');
+  const resetBtn = document.getElementById('reset-btn');
   if (!form) return;
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      if (confirm('Hapus semua data input dan riwayat prediksi?')) {
+        lastResult = null;
+        clearHistory();
+        window.navigateTo('inputs');
+      }
+    });
+  }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -142,25 +159,25 @@ export function initInputsPage() {
     const errorDiv = document.getElementById('form-error');
     const errorText = document.getElementById('form-error-text');
 
-    const capacity = parseFloat(document.getElementById('inp-capacity').value);
-    const vd = parseFloat(document.getElementById('inp-vdrop').value);
-    const minV = parseFloat(document.getElementById('inp-minv').value);
+    const voltage = parseFloat(document.getElementById('inp-voltage').value);
+    const irt = parseFloat(document.getElementById('inp-irt').value);
+    const cca = parseFloat(document.getElementById('inp-cca').value);
 
-    if (isNaN(capacity) || isNaN(vd) || isNaN(minV)) {
+    if (isNaN(voltage) || isNaN(irt) || isNaN(cca)) {
       errorDiv.classList.remove('hidden');
       errorText.textContent = 'Mohon isi semua kolom yang diperlukan.';
       return;
     }
 
     btn.disabled = true;
-    btnText.innerHTML = 'AI Sedang Berpikir...';
+    btnText.innerHTML = 'Sedang Berpikir...';
     errorDiv.classList.add('hidden');
 
     try {
       const res = await fetch('http://127.0.0.1:5000/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ capacity, voltage_drop: vd, min_voltage: minV })
+        body: JSON.stringify({ voltage, irt, cca })
       });
 
       const data = await res.json();
@@ -172,12 +189,22 @@ export function initInputsPage() {
         rul_weeks: data.rul_weeks,
         predictedSoh: data.predicted_soh,
         status: data.status,
-        inputCapacity: capacity,
-        inputVd: vd,
-        inputMinV: minV
+        inputVoltage: voltage,
+        inputIrt: irt,
+        inputCca: cca
       };
 
-      addPrediction({ id: Date.now(), rul: data.rul_cycle, soh: data.predicted_soh, status: data.status });
+      addPrediction({
+        id: Date.now(),
+        rul: data.rul_cycle,
+        rul_days: data.rul_days,
+        rul_weeks: data.rul_weeks,
+        soh: data.predicted_soh,
+        status: data.status,
+        inputVoltage: voltage,
+        inputIrt: irt,
+        inputCca: cca
+      });
       window.navigateTo('inputs');
 
       setTimeout(() => {
@@ -193,13 +220,13 @@ export function initInputsPage() {
 
     } catch (err) {
       errorDiv.classList.remove('hidden');
-      errorText.textContent = err.message.includes('Failed to fetch') 
+      errorText.textContent = err.message.includes('Failed to fetch')
         ? 'Gagal terhubung ke server. Pastikan Flask aktif.'
         : 'Error: ' + err.message;
       console.error(err);
     } finally {
       btn.disabled = false;
-      btnText.textContent = 'Analisis dengan AI';
+      btnText.textContent = 'Mulai Prediksi';
     }
   });
 

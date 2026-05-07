@@ -20,8 +20,8 @@ def train_model():
     df = pd.read_csv(data_path)
     
     # 2. Persiapan Fitur dan Target
-    # Fitur SEKARANG: hanya parameter sensor mentah
-    X = df[['capacity', 'voltage_drop', 'min_voltage']]
+    # Fitur SEKARANG: menggunakan parameter standar industri (Voltage, IRT, CCA)
+    X = df[['voltage', 'irt', 'cca']]
     # Target SEKARANG: RUL dan SOH
     y = df[['rul', 'soh']]
     
@@ -32,9 +32,9 @@ def train_model():
     pipeline = Pipeline([
         ('scaler', MinMaxScaler()),
         ('model', MultiOutputRegressor(xgb.XGBRegressor(
-            n_estimators=150,
-            learning_rate=0.08,
-            max_depth=7,
+            n_estimators=200,
+            learning_rate=0.05,
+            max_depth=5,
             random_state=42,
             objective='reg:squarederror'
         )))

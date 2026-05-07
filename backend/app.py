@@ -23,14 +23,14 @@ def predict():
     try:
         data = request.get_json()
         
-        # Input Features (SOH is now an output, not input)
-        capacity = float(data['capacity'])
-        voltage_drop = float(data['voltage_drop'])
-        min_voltage = float(data['min_voltage'])
+        # Input Features (Industry Standards: Voltage, IRT, CCA)
+        voltage = float(data['voltage'])
+        irt = float(data['irt'])
+        cca = float(data['cca'])
         
         # Prepare for model (must match training features)
-        input_df = pd.DataFrame([[capacity, voltage_drop, min_voltage]], 
-                                columns=['capacity', 'voltage_drop', 'min_voltage'])
+        input_df = pd.DataFrame([[voltage, irt, cca]], 
+                                columns=['voltage', 'irt', 'cca'])
         
         # Prediction (Multi-output: [RUL, SOH])
         prediction = model.predict(input_df)[0]
