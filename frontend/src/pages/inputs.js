@@ -21,7 +21,7 @@ export function renderInputs() {
       ? 'Telemetri saat ini menunjukkan performa optimal. SOH di atas ambang batas normal.'
       : r.status === 'Peringatan'
         ? 'Baterai mulai menunjukkan tanda-tanda aus (SOH menurun). Pertimbangkan untuk menyiapkan anggaran penggantian.'
-        : 'Tingkat degradasi kritis (SOH rendah). Baterai sudah tidak handal dan harus segera diganti.';
+        : 'Tingkat degradasi kritis (SOH rendah). Baterai sudah tidak handal, harus segera di-recharge atau diganti.';
 
 
     resultHTML = `
@@ -174,7 +174,12 @@ export function initInputsPage() {
     errorDiv.classList.add('hidden');
 
     try {
-      const res = await fetch('http://127.0.0.1:5000/predict', {
+      // Deteksi otomatis URL API (Local vs Production)
+      const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://127.0.0.1:5000'
+        : 'https://backend-battery-rul.onrender.com'; // <--- GANTI DENGAN URL RENDER ANDA NANTI
+
+      const res = await fetch(`${API_BASE}/predict`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ voltage, irt, cca })

@@ -46,7 +46,7 @@ export function renderDashboard() {
     </div>
 
     <!-- KPI Cards -->
-    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-md">
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md">
       <div class="bg-white p-lg rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
         <span class="text-label-caps text-slate-400 block mb-2">RMSE ERROR</span>
         <div class="flex items-baseline gap-1">
@@ -63,13 +63,6 @@ export function renderDashboard() {
         <span class="text-label-caps text-slate-400 block mb-2">TOTAL PREDIKSI</span>
         <div class="flex items-baseline gap-1">
           <span class="text-h2 font-bold text-slate-800">${totalPredictions}</span>
-        </div>
-      </div>
-      <div class="bg-gradient-to-br from-blue-600 to-blue-700 p-lg rounded-2xl shadow-lg text-white">
-        <span class="text-label-caps opacity-80 block mb-2 uppercase">Status QC</span>
-        <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined">verified</span>
-          <span class="text-h3 font-bold">Terverifikasi</span>
         </div>
       </div>
     </section>
@@ -174,13 +167,12 @@ export function renderDashboard() {
         ${predictions.length > 0 ? (
       predictions[0].status === 'Normal' ? 'BATERAI DALAM KONDISI BAIK' :
         predictions[0].status === 'Peringatan' ? 'PERSIAPKAN PENGGANTIAN' :
-          'GANTI SEGERA / CRITICAL'
+          'GANTI SEGERA / RECHARGE'
     ) : '-'}
         </span>
       </div>
 
       <div class="receipt-footer">
-        <div>QC Terverifikasi</div>
         <div>Standard PT Battery Indonesia</div>
         <div class="mt-2">${new Date().toLocaleDateString('id-ID')} - ${new Date().toLocaleTimeString('id-ID')}</div>
       </div>

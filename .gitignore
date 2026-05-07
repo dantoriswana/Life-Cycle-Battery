@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# Excel Temp Files
+~$*.xlsx
+~$*.xls
+
+# Node.js
+node_modules/
+dist/
+.env
+
+# OS
+.DS_Store
+Thumbs.db
