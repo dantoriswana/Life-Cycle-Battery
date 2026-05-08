@@ -177,7 +177,7 @@ export function initInputsPage() {
       // Deteksi otomatis URL API (Local vs Production)
       const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
         ? 'http://127.0.0.1:5000'
-        : '/api'; 
+        : 'https://backend-battery-rul.onrender.com'; // Ganti dengan URL Render Anda
 
 
       const res = await fetch(`${API_BASE}/predict`, {
