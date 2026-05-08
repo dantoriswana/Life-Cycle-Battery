@@ -1,0 +1,9 @@
+{
+  "name": "battery-life-cycle",
+  "version": "1.0.0",
+  "description": "Battery RUL Prediction Project",
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build",
+    "install": "cd frontend && npm install"
+  }
+}
