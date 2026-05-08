@@ -18,7 +18,9 @@ model = joblib.load(model_path)
 with open(meta_path, 'r') as f:
     meta = json.load(f)
 
+@app.route('/api/predict', methods=['POST'])
 @app.route('/predict', methods=['POST'])
+
 def predict():
     try:
         data = request.get_json()
@@ -78,7 +80,9 @@ def predict():
         traceback.print_exc()
         return jsonify({'error': str(e)}), 400
 
+@app.route('/api/stats', methods=['GET'])
 @app.route('/stats', methods=['GET'])
+
 def get_stats():
     return jsonify(meta)
 
