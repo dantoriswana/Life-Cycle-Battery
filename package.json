@@ -1,9 +1,14 @@
 {
   "name": "battery-life-cycle",
   "version": "1.0.0",
-  "description": "Battery RUL Prediction Project",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "build": "cd frontend && npm install && npm run build",
-    "install": "cd frontend && npm install"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^8.0.9"
   }
 }
