@@ -18,9 +18,7 @@ model = joblib.load(model_path)
 with open(meta_path, 'r') as f:
     meta = json.load(f)
 
-@app.route('/api/predict', methods=['POST'])
 @app.route('/predict', methods=['POST'])
-
 def predict():
     try:
         data = request.get_json()
@@ -40,6 +38,22 @@ def predict():
         predicted_soh = float(prediction[1])
         
         rul_cycles = max(0, rul_cycles) # Prevent negative
+        
+        # Physical constraint: If Voltage is critically low, RUL cannot be high
+        if voltage < 11.0:
+            rul_cycles = 0
+            
+        # Synchronization Logic for consistency
+        # If RUL is 0, the battery is effectively at 0% health for the user
+        if rul_cycles == 0:
+            predicted_soh = 0.0 # Force to 0% if RUL is 0
+            
+        # Physical constraint: Aggressive drop below 11.5V
+        if voltage < 11.5:
+            # 10.5V is typically the dead voltage for a 12V Lead-Acid battery
+            voltage_factor = max(0, (voltage - 10.5) / 1.0) # 0 at 10.5V, 1 at 11.5V
+            predicted_soh = min(predicted_soh, voltage_factor * 50.0)
+
         predicted_soh = np.clip(predicted_soh, 0, 100) # Clamp 0-100%
         
         # Estimation of days/weeks (Asumsi aki baru tahan ~2 tahun atau 730 hari)
@@ -80,9 +94,7 @@ def predict():
         traceback.print_exc()
         return jsonify({'error': str(e)}), 400
 
-@app.route('/api/stats', methods=['GET'])
 @app.route('/stats', methods=['GET'])
-
 def get_stats():
     return jsonify(meta)
 

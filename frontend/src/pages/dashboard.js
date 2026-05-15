@@ -47,73 +47,73 @@ export function renderDashboard() {
 
     <!-- KPI Cards -->
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md">
-      <div class="bg-white p-lg rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+      <div class="glass-panel p-lg rounded-2xl shadow-sm hover:shadow-md transition-shadow">
         <span class="text-label-caps text-slate-400 block mb-2">RMSE ERROR</span>
         <div class="flex items-baseline gap-1">
-          <span class="text-h2 font-bold text-slate-800">${DATASET.rmse}</span>
+          <span class="text-h2 font-bold text-slate-800 dark:text-slate-100">${DATASET.rmse}</span>
         </div>
       </div>
-      <div class="bg-white p-lg rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+      <div class="glass-panel p-lg rounded-2xl shadow-sm hover:shadow-md transition-shadow">
         <span class="text-label-caps text-slate-400 block mb-2">AKURASI R²</span>
         <div class="flex items-baseline gap-1">
           <span class="text-h2 font-bold text-blue-600">${DATASET.r2}</span>
         </div>
       </div>
-      <div class="bg-white p-lg rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+      <div class="glass-panel p-lg rounded-2xl shadow-sm hover:shadow-md transition-shadow">
         <span class="text-label-caps text-slate-400 block mb-2">TOTAL PREDIKSI</span>
         <div class="flex items-baseline gap-1">
-          <span class="text-h2 font-bold text-slate-800">${totalPredictions}</span>
+          <span class="text-h2 font-bold text-slate-800 dark:text-slate-100">${totalPredictions}</span>
         </div>
       </div>
     </section>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
-      <section class="lg:col-span-8 bg-white rounded-2xl border border-slate-100 p-lg shadow-sm">
+      <section class="lg:col-span-8 glass-panel rounded-2xl p-lg shadow-sm">
         <div class="flex justify-between items-center mb-lg">
-          <h3 class="font-h3 text-slate-800">Tren Sisa Umur (RUL)</h3>
+          <h3 class="font-h3 text-slate-800 dark:text-slate-100">Tren Sisa Umur (RUL)</h3>
           <span class="text-xs text-slate-400 font-mono italic">*Data siklus degradasi</span>
         </div>
-        <div id="dashboard-chart" class="w-full h-64 bg-slate-50/50 rounded-xl overflow-hidden flex items-center justify-center border border-dashed border-slate-200">
+        <div id="dashboard-chart" class="w-full h-64 bg-slate-50/5 dark:bg-slate-900/50 rounded-xl overflow-hidden flex items-center justify-center border border-dashed border-slate-200 dark:border-slate-700">
            ${predictions.length === 0 ? '<p class="text-slate-300">Belum ada data untuk grafik</p>' : ''}
         </div>
       </section>
 
-      <section class="lg:col-span-4 bg-white rounded-2xl border border-slate-100 p-lg shadow-sm">
-        <h3 class="font-h3 text-slate-800 mb-lg text-center">Distribusi Kesehatan</h3>
+      <section class="lg:col-span-4 glass-panel rounded-2xl p-lg shadow-sm">
+        <h3 class="font-h3 text-slate-800 dark:text-slate-100 mb-lg text-center">Distribusi Kesehatan</h3>
         <div class="space-y-md">
            <div class="relative pt-1">
             <div class="flex mb-2 items-center justify-between">
-              <div><span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200">Optimal</span></div>
+              <div><span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200/30">Optimal</span></div>
               <div class="text-right"><span class="text-xs font-semibold inline-block text-blue-600">${normalCount}</span></div>
             </div>
-            <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blue-100"><div style="width:${(normalCount / totalPredictions * 100) || 0}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500 transition-all duration-1000"></div></div>
+            <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blue-100 dark:bg-blue-900/20"><div style="width:${(normalCount / totalPredictions * 100) || 0}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500 transition-all duration-1000"></div></div>
           </div>
           <div class="relative pt-1">
             <div class="flex mb-2 items-center justify-between">
-              <div><span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-orange-600 bg-orange-200">Peringatan</span></div>
+              <div><span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-orange-600 bg-orange-200/30">Peringatan</span></div>
               <div class="text-right"><span class="text-xs font-semibold inline-block text-orange-600">${warningCount}</span></div>
             </div>
-            <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-orange-100"><div style="width:${(warningCount / totalPredictions * 100) || 0}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-orange-500 transition-all duration-1000"></div></div>
+            <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-orange-100 dark:bg-orange-900/20"><div style="width:${(warningCount / totalPredictions * 100) || 0}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-orange-500 transition-all duration-1000"></div></div>
           </div>
           <div class="relative pt-1">
             <div class="flex mb-2 items-center justify-between">
-              <div><span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-red-600 bg-red-200">Kritis</span></div>
+              <div><span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-red-600 bg-red-200/30">Kritis</span></div>
               <div class="text-right"><span class="text-xs font-semibold inline-block text-red-600">${criticalCount}</span></div>
             </div>
-            <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-red-100"><div style="width:${(criticalCount / totalPredictions * 100) || 0}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500 transition-all duration-1000"></div></div>
+            <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-red-100 dark:bg-red-900/20"><div style="width:${(criticalCount / totalPredictions * 100) || 0}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500 transition-all duration-1000"></div></div>
           </div>
         </div>
       </section>
     </div>
 
-    <section class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
-      <div class="p-md bg-slate-50 flex justify-between items-center border-b border-slate-100">
-        <h3 class="font-h3 text-slate-800">5 Riwayat Terakhir</h3>
+    <section class="glass-panel rounded-2xl overflow-hidden shadow-sm">
+      <div class="p-md bg-slate-50/50 dark:bg-slate-900/50 flex justify-between items-center border-b border-slate-100 dark:border-slate-700">
+        <h3 class="font-h3 text-slate-800 dark:text-slate-100">5 Riwayat Terakhir</h3>
         <button onclick="window.navigateTo('inputs')" class="text-blue-600 text-xs font-bold uppercase tracking-widest hover:underline">Lihat Semua</button>
       </div>
       <div class="overflow-x-auto">
         <table class="w-full text-left">
-          <thead class="bg-slate-50/50 text-slate-400 font-label-caps text-[10px] uppercase border-b border-slate-100">
+          <thead class="bg-slate-50/30 dark:bg-slate-900/30 text-slate-400 font-label-caps text-[10px] uppercase border-b border-slate-100 dark:border-slate-700">
             <tr>
               <th class="px-md py-sm">ID</th>
               <th class="px-md py-sm">Tipe Aki</th>
@@ -122,7 +122,7 @@ export function renderDashboard() {
               <th class="px-md py-sm">Status</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-50">
+          <tbody class="divide-y divide-slate-50 dark:divide-slate-800">
             ${tableRows}
           </tbody>
         </table>
@@ -161,20 +161,21 @@ export function renderDashboard() {
       
       <div class="receipt-divider"></div>
       
-      <div class="mt-4 text-center text-[12px] font-bold border-2 border-black p-2 leading-relaxed">
-        REKOMENDASI:<br/>
-        <span class="text-[14px]">
+      <div class="receipt-recommendation">
+        REKOMENDASI:
+        <div class="font-bold">
         ${predictions.length > 0 ? (
       predictions[0].status === 'Normal' ? 'BATERAI DALAM KONDISI BAIK' :
         predictions[0].status === 'Peringatan' ? 'PERSIAPKAN PENGGANTIAN' :
-          'GANTI SEGERA / RECHARGE'
+          'GANTI SEGERA / CRITICAL'
     ) : '-'}
-        </span>
+        </div>
       </div>
 
       <div class="receipt-footer">
+        <div class="font-bold">QC Terverifikasi</div>
         <div>Standard PT Battery Indonesia</div>
-        <div class="mt-2">${new Date().toLocaleDateString('id-ID')} - ${new Date().toLocaleTimeString('id-ID')}</div>
+        <div class="mt-1">${new Date().toLocaleDateString('id-ID')} - ${new Date().toLocaleTimeString('id-ID')}</div>
       </div>
     </div>
   </div>`;

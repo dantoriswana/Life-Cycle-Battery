@@ -60,7 +60,7 @@ export function renderCharts() {
   return `
     <div class="space-y-8 page-enter p-4">
       <!-- Summary KPIs -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <div class="glass-panel premium-card p-6 rounded-2xl">
           <p class="text-xs font-bold text-slate-400 uppercase mb-2">Akurasi (R²)</p>
           <h3 class="text-3xl font-black text-blue-600">${DATASET.r2}</h3>
@@ -73,18 +73,14 @@ export function renderCharts() {
           <p class="text-xs font-bold text-slate-400 uppercase mb-2">Total Sampel</p>
           <h3 class="text-3xl font-black text-slate-800">${DATASET.totalCycles.toLocaleString()}</h3>
         </div>
-        <div class="glass-panel premium-card p-6 rounded-2xl">
-          <p class="text-xs font-bold text-slate-400 uppercase mb-2">Keyakinan</p>
-          <h3 class="text-3xl font-black text-emerald-600">99.8%</h3>
-        </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <!-- Chart SOH -->
-        <div class="glass-panel premium-card p-8 rounded-3xl">
+        <div class="glass-panel p-8 rounded-3xl">
           <div class="flex items-center justify-between mb-8">
-            <h3 class="text-xl font-bold text-slate-900">Tren Kesehatan (SOH)</h3>
-            <div class="flex items-center space-x-2 text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">Tren Kesehatan (SOH)</h3>
+            <div class="flex items-center space-x-2 text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1 rounded-full">
               <span class="w-2 h-2 bg-emerald-600 rounded-full animate-pulse"></span>
               RIWAYAT PREDIKSI
             </div>
@@ -96,8 +92,13 @@ export function renderCharts() {
                   <feGaussianBlur stdDeviation="3" result="blur" />
                   <feComposite in="SourceGraphic" in2="blur" operator="over" />
                 </filter>
+                <linearGradient id="soh-grad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#059669" stop-opacity="0.2"/>
+                  <stop offset="100%" stop-color="#059669" stop-opacity="0"/>
+                </linearGradient>
               </defs>
               ${renderGridSOH()}
+              <path d="${sohPathD} L ${getX(sorted.length - 1, sorted.length)} ${H - PAD} L ${getX(0, sorted.length)} ${H - PAD} Z" fill="url(#soh-grad)" />
               <path d="${sohPathD}" fill="none" stroke="#059669" stroke-width="4" stroke-linecap="round" filter="url(#glow-soh)" />
               ${sorted.map((p, i) => `<circle cx="${getX(i, sorted.length)}" cy="${getY_SOH(p.soh)}" r="5" fill="white" stroke="#059669" stroke-width="3" />`).join('')}
             </svg>
@@ -105,10 +106,10 @@ export function renderCharts() {
         </div>
 
         <!-- Chart RUL -->
-        <div class="glass-panel premium-card p-8 rounded-3xl">
+        <div class="glass-panel p-8 rounded-3xl">
           <div class="flex items-center justify-between mb-8">
-            <h3 class="text-xl font-bold text-slate-900">Tren Prediksi Umur (RUL)</h3>
-            <div class="flex items-center space-x-2 text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">Tren Prediksi Umur (RUL)</h3>
+            <div class="flex items-center space-x-2 text-xs font-bold text-blue-600 bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full">
               <span class="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span>
               RIWAYAT PREDIKSI
             </div>
@@ -120,8 +121,13 @@ export function renderCharts() {
                   <feGaussianBlur stdDeviation="3" result="blur" />
                   <feComposite in="SourceGraphic" in2="blur" operator="over" />
                 </filter>
+                <linearGradient id="rul-grad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#2563eb" stop-opacity="0.2"/>
+                  <stop offset="100%" stop-color="#2563eb" stop-opacity="0"/>
+                </linearGradient>
               </defs>
               ${renderGridRUL()}
+              <path d="${rulPathD} L ${getX(sorted.length - 1, sorted.length)} ${H - PAD} L ${getX(0, sorted.length)} ${H - PAD} Z" fill="url(#rul-grad)" />
               <path d="${rulPathD}" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round" filter="url(#glow-rul)" />
               ${sorted.map((p, i) => `<circle cx="${getX(i, sorted.length)}" cy="${getY_RUL(p.rul)}" r="5" fill="white" stroke="#2563eb" stroke-width="3" />`).join('')}
             </svg>
@@ -130,16 +136,16 @@ export function renderCharts() {
       </div>
 
       <!-- Feature Importance Section -->
-      <div class="glass-panel premium-card p-8 rounded-3xl">
-        <h3 class="text-xl font-bold text-slate-900 mb-8">Parameter Kontributor Utama (Feature Importance)</h3>
+      <div class="glass-panel p-8 rounded-3xl">
+        <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-8">Parameter Kontributor Utama (Feature Importance)</h3>
         <div class="space-y-6">
           ${FEATURE_IMPORTANCE.map(item => `
             <div class="space-y-2">
               <div class="flex justify-between text-sm font-bold">
-                <span class="text-slate-600">${item.name}</span>
-                <span class="text-blue-600">${item.value}%</span>
+                <span class="text-slate-600 dark:text-slate-300">${item.name}</span>
+                <span class="text-blue-600 dark:text-blue-400">${item.value}%</span>
               </div>
-              <div class="h-4 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+              <div class="h-4 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700">
                 <div class="h-full spectrum-gradient rounded-full" style="width: ${item.value}%"></div>
               </div>
             </div>
@@ -151,9 +157,9 @@ export function renderCharts() {
       </div>
 
       <!-- Actual vs Predicted Section -->
-      <div class="glass-panel premium-card p-10 rounded-3xl">
+      <div class="glass-panel p-10 rounded-3xl">
         <div class="mb-10 text-center">
-          <h3 class="text-2xl font-black text-slate-900 mb-2">Validasi Akurasi Model</h3>
+          <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-2">Validasi Akurasi Model</h3>
           <p class="text-slate-500">Perbandingan Data Sebenarnya (Lab) vs Hasil Prediksi AI</p>
         </div>
 
@@ -161,13 +167,13 @@ export function renderCharts() {
           <!-- RUL Validation -->
           <div class="space-y-4">
             <div class="flex justify-between items-end">
-               <h4 class="font-bold text-slate-700">Akurasi RUL (Siklus)</h4>
+               <h4 class="font-bold text-slate-700 dark:text-slate-300">Akurasi RUL (Siklus)</h4>
                <div class="flex gap-4 text-[10px] font-bold">
                  <div class="flex items-center gap-1"><span class="w-3 h-1 bg-red-500 rounded"></span> DATA ASLI</div>
                  <div class="flex items-center gap-1"><span class="w-3 h-1 bg-blue-500 rounded"></span> PREDIKSI AI</div>
                </div>
             </div>
-            <div class="h-[250px] bg-white rounded-xl p-4 border-2 border-slate-200">
+            <div class="h-[250px] glass-panel rounded-xl p-4 border-2 border-slate-200 dark:border-slate-700">
                <svg viewBox="0 0 ${W} ${H}" class="w-full h-full overflow-visible">
                  ${(() => {
                     const samples = VALIDATION_DATA;
@@ -182,7 +188,7 @@ export function renderCharts() {
                     let grid = '';
                     for(let j=0; j<=4; j++) {
                       const y = getY((maxV/4)*j);
-                      grid += `<line x1="${PAD}" x2="${W-PAD}" y1="${y}" y2="${y}" stroke="#f1f5f9" stroke-width="1" />`;
+                      grid += `<line x1="${PAD}" x2="${W-PAD}" y1="${y}" y2="${y}" stroke="currentColor" class="text-slate-100 dark:text-slate-800" stroke-width="1" />`;
                     }
 
                     return `
@@ -202,13 +208,13 @@ export function renderCharts() {
           <!-- SOH Validation -->
           <div class="space-y-4">
             <div class="flex justify-between items-end">
-               <h4 class="font-bold text-slate-700">Akurasi SOH (%)</h4>
+               <h4 class="font-bold text-slate-700 dark:text-slate-300">Akurasi SOH (%)</h4>
                <div class="flex gap-4 text-[10px] font-bold">
                  <div class="flex items-center gap-1"><span class="w-3 h-1 bg-red-500 rounded"></span> DATA ASLI</div>
                  <div class="flex items-center gap-1"><span class="w-3 h-1 bg-emerald-500 rounded"></span> PREDIKSI AI</div>
                </div>
             </div>
-            <div class="h-[250px] bg-white rounded-xl p-4 border-2 border-slate-200">
+            <div class="h-[250px] glass-panel rounded-xl p-4 border-2 border-slate-200 dark:border-slate-700">
                <svg viewBox="0 0 ${W} ${H}" class="w-full h-full overflow-visible">
                  ${(() => {
                     const samples = VALIDATION_DATA;
@@ -223,7 +229,7 @@ export function renderCharts() {
                     let grid = '';
                     for(let j=0; j<=4; j++) {
                       const y = getY(20 + j*20);
-                      grid += `<line x1="${PAD}" x2="${W-PAD}" y1="${y}" y2="${y}" stroke="#f1f5f9" stroke-width="1" />`;
+                      grid += `<line x1="${PAD}" x2="${W-PAD}" y1="${y}" y2="${y}" stroke="currentColor" class="text-slate-100 dark:text-slate-800" stroke-width="1" />`;
                     }
 
                     return `

@@ -2,19 +2,32 @@ import './style.css';
 import { renderDashboard, initDashboardChart } from './pages/dashboard.js';
 import { renderInputs, initInputsPage } from './pages/inputs.js';
 import { renderCharts, initChartsPage } from './pages/charts.js';
+import { renderWelcome, initWelcome } from './pages/welcome.js';
 
 // ===== SPA Router =====
 const pages = {
+  welcome:   { render: renderWelcome,   init: initWelcome },
   dashboard: { render: renderDashboard, init: initDashboardChart },
   inputs:    { render: renderInputs,    init: initInputsPage },
   charts:    { render: renderCharts,    init: initChartsPage }
 };
 
-let currentPage = 'dashboard';
+let currentPage = 'welcome';
 
 function navigate(page) {
-  if (!pages[page]) page = 'dashboard';
+  if (!pages[page]) page = 'welcome';
   currentPage = page;
+
+  const header = document.getElementById('top-header');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  if (page === 'welcome') {
+    if (header) header.classList.add('hidden');
+    if (mobileNav) mobileNav.classList.add('hidden');
+  } else {
+    if (header) header.classList.remove('hidden');
+    if (mobileNav) mobileNav.classList.remove('hidden');
+  }
 
   const content = document.getElementById('page-content');
   const titleEl = document.getElementById('page-title');
@@ -61,8 +74,22 @@ window.navigateTo = navigate;
 
 // Init
 document.addEventListener('DOMContentLoaded', () => {
+  // Handle dark mode
+  const darkModeToggle = document.getElementById('dark-mode-toggle');
+  const isDark = localStorage.getItem('dark-mode') === 'true';
+  if (isDark) {
+    document.documentElement.classList.add('dark');
+    document.body.classList.add('dark-mode');
+  }
+
+  darkModeToggle?.addEventListener('click', () => {
+    const isNowDark = document.documentElement.classList.toggle('dark');
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('dark-mode', isNowDark);
+  });
+
   // Handle hash-based routing
-  const hash = window.location.hash.replace('#', '') || 'dashboard';
+  const hash = window.location.hash.replace('#', '') || 'welcome';
   navigate(hash);
 
   // Click handlers for nav links
@@ -77,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Handle back/forward
   window.addEventListener('hashchange', () => {
-    const hash = window.location.hash.replace('#', '') || 'dashboard';
+    const hash = window.location.hash.replace('#', '') || 'welcome';
     if (hash !== currentPage) navigate(hash);
   });
 });

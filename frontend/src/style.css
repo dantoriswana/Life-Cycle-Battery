@@ -15,15 +15,16 @@
 .spectrum-gradient-border::before {
   content: "";
   position: absolute;
-  inset: -1px;
+  inset: -2px;
   z-index: -1;
-  background: #005ac2;
+  background: linear-gradient(90deg, #2563eb, #8b5cf6, #f97316, #ef4444);
   border-radius: 0.8rem;
+  opacity: 0.8;
 }
 
-/* Solid blue for unified branding */
+/* Spectrum gradient for buttons */
 .spectrum-gradient {
-  background: #2563eb;
+  background: linear-gradient(135deg, #2563eb 0%, #a855f7 50%, #f97316 100%);
 }
 
 /* SVG chart grid lines */
@@ -32,37 +33,68 @@
   stroke-width: 1.5px;
 }
 
+:root {
+  --primary-color: #2563eb;
+  --secondary-color: #7c3aed;
+  --bg-color: #f8fafc;
+  --text-color: #1e293b;
+  --text-muted: #64748b;
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --border-color: rgba(226, 232, 240, 1);
+  --shadow-color: rgba(31, 38, 135, 0.07);
+  --shadow-hover: rgba(0, 0, 0, 0.08);
+  --surface: #ffffff;
+}
+
+.dark-mode {
+  --primary-color: #3b82f6;
+  --secondary-color: #a78bfa;
+  --bg-color: #0f172a;
+  --text-color: #f1f5f9;
+  --text-muted: #94a3b8;
+  --glass-bg: rgba(30, 41, 59, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --border-color: rgba(51, 65, 85, 1);
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --shadow-hover: rgba(0, 0, 0, 0.5);
+  --surface: #1e293b;
+}
+
 /* Body with Mesh Gradient Background */
 body {
   min-height: 100vh;
   margin: 0;
-  background-color: #f8fafc;
+  background-color: var(--bg-color);
   background-image: 
-    radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.08) 0, transparent 50%), 
-    radial-gradient(at 50% 0%, rgba(168, 85, 247, 0.08) 0, transparent 50%), 
-    radial-gradient(at 100% 0%, rgba(249, 115, 22, 0.08) 0, transparent 50%);
+    radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.1) 0, transparent 50%), 
+    radial-gradient(at 50% 0%, rgba(168, 85, 247, 0.1) 0, transparent 50%), 
+    radial-gradient(at 100% 0%, rgba(249, 115, 22, 0.1) 0, transparent 50%);
   background-attachment: fixed;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  color: #1e293b;
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Glass panel effect (Enhanced) */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.75);
+  background: var(--glass-bg, rgba(255, 255, 255, 0.75));
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.4));
+  box-shadow: 0 8px 32px 0 var(--shadow-color, rgba(31, 38, 135, 0.07));
 }
 
 /* Premium card hover effect */
 .premium-card {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--border-color, rgba(226, 232, 240, 1));
 }
 
 .premium-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 40px var(--shadow-hover, rgba(0, 0, 0, 0.08));
+  border-color: var(--primary-color, #2563eb);
 }
 
 /* Page transition animation */
@@ -235,46 +267,28 @@ input[type="number"] {
   }
 
   @page {
-    size: 80mm auto;
-    margin: 0;
-  }
-
-  /* Reset for print */
-  body {
-    margin: 0 !important;
-    padding: 0 !important;
-    background: white !important;
-    width: 80mm !important;
-  }
-
-  /* Hide navigation and other UI */
-  header, nav, #mobile-nav, .print\:hidden {
-    display: none !important;
-  }
-
-  /* Ensure the container doesn't restrict print area */
-  #page-content {
-    max-width: none !important;
-    width: 80mm !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    margin: 2mm;
+    size: 54mm 86mm;
   }
 
   #print-area {
     display: block !important;
-    width: 80mm !important;
-    margin: 0 !important;
+    width: 54mm !important;
+    margin: 0 auto !important;
     padding: 0 !important;
   }
 
   .receipt-container {
-    width: 80mm;
-    padding: 8mm 4mm;
+    width: 54mm;
+    margin: 0 auto;
+    padding: 4mm 2mm;
     background: white;
+    box-sizing: border-box;
     font-family: 'Courier New', Courier, monospace;
     color: black;
-    font-size: 12px;
-    line-height: 1.4;
+    font-size: 8px;
+    line-height: 1.1;
+    page-break-inside: avoid;
   }
 
   .receipt-header {
@@ -285,7 +299,7 @@ input[type="number"] {
   }
 
   .receipt-title {
-    font-size: 16px;
+    font-size: 10px;
     font-weight: bold;
   }
 
@@ -297,15 +311,24 @@ input[type="number"] {
   .receipt-row {
     display: flex;
     justify-content: space-between;
-    margin: 4px 0;
+    margin: 2px 0;
+  }
+
+  .receipt-recommendation {
+    margin-top: 6px;
+    text-align: center;
+    border: 1px solid black;
+    padding: 3px;
+    font-size: 8px;
+    line-height: 1.2;
   }
 
   .receipt-footer {
     text-align: center;
-    margin-top: 20px;
-    font-size: 10px;
+    margin-top: 8px;
+    font-size: 7px;
     border-top: 1px dashed #000;
-    padding-top: 8px;
+    padding-top: 4px;
   }
 }
 
