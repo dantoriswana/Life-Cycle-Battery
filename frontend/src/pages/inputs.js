@@ -7,16 +7,16 @@ let isLivePrediction = true;
 export function renderInputs() {
   const r = lastResult;
   const statusColor = !r ? 'slate' : r.status === 'Normal' ? 'emerald' : r.status === 'Peringatan' ? 'orange' : 'red';
-  
+
   // Build result HTML
   let resultHTML = '';
   if (r) {
     const statusIcon = r.status === 'Normal' ? 'check_circle' : r.status === 'Peringatan' ? 'warning' : 'dangerous';
     const recTitle = r.status === 'Normal' ? 'Baterai Sehat' : r.status === 'Peringatan' ? 'Butuh Perhatian' : 'Ganti Segera';
-    const recDesc = r.status === 'Normal' 
-      ? 'Performa optimal. Terus pantau secara berkala.' 
-      : r.status === 'Peringatan' 
-        ? 'Penurunan kapasitas terdeteksi. Siapkan unit cadangan.' 
+    const recDesc = r.status === 'Normal'
+      ? 'Performa optimal. Terus pantau secara berkala.'
+      : r.status === 'Peringatan'
+        ? 'Penurunan kapasitas terdeteksi. Siapkan unit cadangan.'
         : 'Sangat kritis. Berisiko kegagalan sistem sewaktu-waktu.';
 
     resultHTML = `
@@ -206,7 +206,10 @@ export function initInputsPage() {
     const cca = parseFloat(ccaRange.value);
 
     try {
-      const res = await fetch('http://127.0.0.1:5000/predict', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000';
+      const res = await fetch(`${apiUrl}/predict`, {
+
+
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ voltage, irt, cca })
@@ -228,7 +231,7 @@ export function initInputsPage() {
       // Update UI partial or full
       const container = document.getElementById('result-container');
       if (container) {
-         container.innerHTML = renderResultOnly(lastResult);
+        container.innerHTML = renderResultOnly(lastResult);
       }
     } catch (e) {
       console.error(e);
@@ -253,7 +256,7 @@ export function initInputsPage() {
   });
 
   manualBtn.addEventListener('click', runPrediction);
-  
+
   saveBtn.addEventListener('click', () => {
     if (lastResult) {
       addPrediction({
