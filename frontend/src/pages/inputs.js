@@ -20,12 +20,12 @@ export function renderInputs() {
         : 'Sangat kritis. Berisiko kegagalan sistem sewaktu-waktu.';
 
     resultHTML = `
-      <div class="glass-panel p-8 rounded-3xl space-y-8 page-enter relative overflow-hidden">
+      <div class="glass-panel p-4 md:p-8 rounded-3xl space-y-8 page-enter relative overflow-hidden">
         <div class="absolute -top-12 -right-12 w-48 h-48 bg-${statusColor}-500/10 rounded-full blur-3xl"></div>
         
         <div class="flex justify-between items-start relative z-10">
           <div>
-            <h2 class="text-3xl font-black text-slate-900 dark:text-white">Hasil Analisis</h2>
+            <h2 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Hasil Analisis</h2>
             <p class="text-slate-500 text-sm font-bold uppercase tracking-widest mt-1">Status: <span class="text-${statusColor}-600">${r.status}</span></p>
           </div>
           <div class="p-3 bg-${statusColor}-50 rounded-2xl">
@@ -39,10 +39,10 @@ export function renderInputs() {
              <div class="relative w-32 h-32 flex items-center justify-center">
                 <svg class="w-full h-full transform -rotate-90">
                   <circle cx="64" cy="64" r="58" stroke="currentColor" stroke-width="8" fill="transparent" class="text-slate-200" />
-                  <circle id="soh-circle" cx="64" cy="64" r="58" stroke="currentColor" stroke-width="10" stroke-dasharray="364.4" stroke-dashoffset="${364.4 - (364.4 * r.predictedSoh / 100)}" fill="transparent" stroke-linecap="round" class="text-${statusColor}-500 transition-all duration-1000" />
+                  <circle id="soh-circle" cx="64" cy="64" r="58" stroke="currentColor" stroke-width="10" stroke-dasharray="364.4" stroke-dashoffset="${364.4 - (364.4 * r.soh / 100)}" fill="transparent" stroke-linecap="round" class="text-${statusColor}-500 transition-all duration-1000" />
                 </svg>
                 <div class="absolute inset-0 flex flex-col items-center justify-center">
-                  <span id="soh-val" class="text-3xl font-black text-slate-800">${r.predictedSoh}%</span>
+                  <span id="soh-val" class="text-3xl font-black text-slate-800">${r.soh}%</span>
                   <span class="text-[10px] font-bold text-slate-400 uppercase">Health</span>
                 </div>
              </div>
@@ -97,7 +97,7 @@ export function renderInputs() {
   <div class="space-y-8 page-enter max-w-6xl mx-auto">
     <div class="flex flex-col md:flex-row justify-between items-end gap-4 mb-2">
       <div>
-        <h1 class="text-4xl font-black text-slate-900 tracking-tight">Simulator "What-If"</h1>
+        <h1 class="text-2xl md:text-4xl font-black text-slate-900 tracking-tight">Simulator "What-If"</h1>
         <p class="text-slate-500 font-medium">Uji berbagai skenario parameter untuk melihat dampaknya pada umur baterai.</p>
       </div>
       <div class="flex items-center gap-2 bg-white p-2 rounded-2xl shadow-sm border border-slate-100">
@@ -112,7 +112,7 @@ export function renderInputs() {
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
       <!-- Input Controls -->
       <section class="lg:col-span-5 space-y-6">
-        <div class="glass-panel p-8 rounded-3xl space-y-10 border-t-4 border-blue-600">
+        <div class="glass-panel p-4 md:p-8 rounded-3xl space-y-10 border-t-4 border-blue-600">
           
           <!-- Voltage Slider -->
           <div class="space-y-4">
@@ -221,7 +221,7 @@ export function initInputsPage() {
         rul: data.rul_cycle,
         rul_days: data.rul_days,
         rul_weeks: data.rul_weeks,
-        predictedSoh: data.predicted_soh,
+        soh: data.predicted_soh,
         status: data.status,
         inputVoltage: voltage,
         inputIrt: irt,
@@ -279,11 +279,11 @@ function renderResultOnly(r) {
   const recDesc = r.status === 'Normal' ? 'Performa optimal.' : r.status === 'Peringatan' ? 'Penurunan kapasitas terdeteksi.' : 'Sangat kritis.';
 
   return `
-    <div class="glass-panel p-8 rounded-3xl space-y-8 page-enter relative overflow-hidden">
+    <div class="glass-panel p-4 md:p-8 rounded-3xl space-y-8 page-enter relative overflow-hidden">
       <div class="absolute -top-12 -right-12 w-48 h-48 bg-${statusColor}-500/10 rounded-full blur-3xl"></div>
       <div class="flex justify-between items-start relative z-10">
         <div>
-          <h2 class="text-3xl font-black text-slate-900">Hasil Analisis</h2>
+          <h2 class="text-2xl md:text-3xl font-black text-slate-900">Hasil Analisis</h2>
           <p class="text-slate-500 text-sm font-bold uppercase tracking-widest mt-1">Status: <span class="text-${statusColor}-600 font-black">${r.status}</span></p>
         </div>
         <div class="p-3 bg-${statusColor}-50 rounded-2xl">
@@ -295,10 +295,10 @@ function renderResultOnly(r) {
            <div class="relative w-32 h-32 flex items-center justify-center">
               <svg class="w-full h-full transform -rotate-90">
                 <circle cx="64" cy="64" r="58" stroke="currentColor" stroke-width="8" fill="transparent" class="text-slate-200" />
-                <circle cx="64" cy="64" r="58" stroke="currentColor" stroke-width="10" stroke-dasharray="364.4" stroke-dashoffset="${364.4 - (364.4 * r.predictedSoh / 100)}" fill="transparent" stroke-linecap="round" class="text-${statusColor}-500 transition-all duration-500" />
+                <circle cx="64" cy="64" r="58" stroke="currentColor" stroke-width="10" stroke-dasharray="364.4" stroke-dashoffset="${364.4 - (364.4 * r.soh / 100)}" fill="transparent" stroke-linecap="round" class="text-${statusColor}-500 transition-all duration-500" />
               </svg>
               <div class="absolute inset-0 flex flex-col items-center justify-center">
-                <span class="text-3xl font-black text-slate-800">${r.predictedSoh}%</span>
+                <span class="text-3xl font-black text-slate-800">${r.soh}%</span>
                 <span class="text-[10px] font-bold text-slate-400 uppercase">Health</span>
               </div>
            </div>

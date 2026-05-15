@@ -17,7 +17,7 @@ export function renderWelcome() {
 
       <!-- Title & Branding -->
       <div class="space-y-4">
-        <h1 class="text-[56px] font-black tracking-tighter text-slate-900 leading-tight">
+        <h1 class="text-4xl md:text-[56px] font-black tracking-tighter text-slate-900 leading-tight">
           EcoSync
         </h1>
         <p class="text-slate-500 font-bold tracking-[0.2em] uppercase text-sm">
@@ -39,7 +39,7 @@ export function renderWelcome() {
       </div>
 
       <!-- System Status Footer -->
-      <div class="pt-24 grid grid-cols-2 gap-12 text-left opacity-60">
+      <div class="pt-24 grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12 text-center sm:text-left opacity-60">
         <div>
           <span class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">System Status</span>
           <p class="text-xs font-bold text-slate-600 flex items-center gap-2">

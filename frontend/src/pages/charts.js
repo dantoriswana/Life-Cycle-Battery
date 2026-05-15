@@ -54,7 +54,7 @@ export function renderCharts() {
     return grid;
   };
 
-  const sohPathD = sorted.map((p, i) => `${i === 0 ? 'M' : 'L'} ${getX(i, sorted.length)} ${getY_SOH(p.soh)}`).join(' ');
+  const sohPathD = sorted.map((p, i) => `${i === 0 ? 'M' : 'L'} ${getX(i, sorted.length)} ${getY_SOH(p.soh || p.predictedSoh || 0)}`).join(' ');
   const rulPathD = sorted.map((p, i) => `${i === 0 ? 'M' : 'L'} ${getX(i, sorted.length)} ${getY_RUL(p.rul)}`).join(' ');
 
   return `
@@ -77,7 +77,7 @@ export function renderCharts() {
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <!-- Chart SOH -->
-        <div class="glass-panel p-8 rounded-3xl">
+        <div class="glass-panel p-4 md:p-8 rounded-3xl">
           <div class="flex items-center justify-between mb-8">
             <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">Tren Kesehatan (SOH)</h3>
             <div class="flex items-center space-x-2 text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1 rounded-full">
@@ -100,13 +100,13 @@ export function renderCharts() {
               ${renderGridSOH()}
               <path d="${sohPathD} L ${getX(sorted.length - 1, sorted.length)} ${H - PAD} L ${getX(0, sorted.length)} ${H - PAD} Z" fill="url(#soh-grad)" />
               <path d="${sohPathD}" fill="none" stroke="#059669" stroke-width="4" stroke-linecap="round" filter="url(#glow-soh)" />
-              ${sorted.map((p, i) => `<circle cx="${getX(i, sorted.length)}" cy="${getY_SOH(p.soh)}" r="5" fill="white" stroke="#059669" stroke-width="3" />`).join('')}
+              ${sorted.map((p, i) => `<circle cx="${getX(i, sorted.length)}" cy="${getY_SOH(p.soh || p.predictedSoh || 0)}" r="5" fill="white" stroke="#059669" stroke-width="3" />`).join('')}
             </svg>
           </div>
         </div>
 
         <!-- Chart RUL -->
-        <div class="glass-panel p-8 rounded-3xl">
+        <div class="glass-panel p-4 md:p-8 rounded-3xl">
           <div class="flex items-center justify-between mb-8">
             <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">Tren Prediksi Umur (RUL)</h3>
             <div class="flex items-center space-x-2 text-xs font-bold text-blue-600 bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full">
@@ -136,7 +136,7 @@ export function renderCharts() {
       </div>
 
       <!-- Feature Importance Section -->
-      <div class="glass-panel p-8 rounded-3xl">
+      <div class="glass-panel p-4 md:p-8 rounded-3xl">
         <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-8">Parameter Kontributor Utama (Feature Importance)</h3>
         <div class="space-y-6">
           ${FEATURE_IMPORTANCE.map(item => `
@@ -157,7 +157,7 @@ export function renderCharts() {
       </div>
 
       <!-- Actual vs Predicted Section -->
-      <div class="glass-panel p-10 rounded-3xl">
+      <div class="glass-panel p-4 md:p-10 rounded-3xl">
         <div class="mb-10 text-center">
           <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-2">Validasi Akurasi Model</h3>
           <p class="text-slate-500">Perbandingan Data Sebenarnya (Lab) vs Hasil Prediksi AI</p>

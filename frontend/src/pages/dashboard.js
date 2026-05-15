@@ -20,7 +20,7 @@ export function renderDashboard() {
         <tr class="hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-0">
           <td class="px-md py-md font-mono text-[11px] text-slate-400">#${String(p.id).slice(-5)}</td>
           <td class="px-md py-md font-semibold text-slate-700">GTZ-5S</td>
-          <td class="px-md py-md font-mono-data text-blue-600 font-bold">${p.soh}%</td>
+          <td class="px-md py-md font-mono-data text-blue-600 font-bold">${p.soh || p.predictedSoh || 0}%</td>
           <td class="px-md py-md font-mono-data text-slate-600">${p.rul}</td>
           <td class="px-md py-md">
             <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-${statusColor}-500/10 text-${statusColor}-600">
@@ -47,19 +47,19 @@ export function renderDashboard() {
 
     <!-- KPI Cards -->
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md">
-      <div class="glass-panel p-lg rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+      <div class="glass-panel p-4 md:p-lg rounded-2xl shadow-sm hover:shadow-md transition-shadow">
         <span class="text-label-caps text-slate-400 block mb-2">RMSE ERROR</span>
         <div class="flex items-baseline gap-1">
           <span class="text-h2 font-bold text-slate-800 dark:text-slate-100">${DATASET.rmse}</span>
         </div>
       </div>
-      <div class="glass-panel p-lg rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+      <div class="glass-panel p-4 md:p-lg rounded-2xl shadow-sm hover:shadow-md transition-shadow">
         <span class="text-label-caps text-slate-400 block mb-2">AKURASI R²</span>
         <div class="flex items-baseline gap-1">
           <span class="text-h2 font-bold text-blue-600">${DATASET.r2}</span>
         </div>
       </div>
-      <div class="glass-panel p-lg rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+      <div class="glass-panel p-4 md:p-lg rounded-2xl shadow-sm hover:shadow-md transition-shadow">
         <span class="text-label-caps text-slate-400 block mb-2">TOTAL PREDIKSI</span>
         <div class="flex items-baseline gap-1">
           <span class="text-h2 font-bold text-slate-800 dark:text-slate-100">${totalPredictions}</span>
@@ -68,7 +68,7 @@ export function renderDashboard() {
     </section>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
-      <section class="lg:col-span-8 glass-panel rounded-2xl p-lg shadow-sm">
+      <section class="lg:col-span-8 glass-panel rounded-2xl p-4 md:p-lg shadow-sm">
         <div class="flex justify-between items-center mb-lg">
           <h3 class="font-h3 text-slate-800 dark:text-slate-100">Tren Sisa Umur (RUL)</h3>
           <span class="text-xs text-slate-400 font-mono italic">*Data siklus degradasi</span>
@@ -78,7 +78,7 @@ export function renderDashboard() {
         </div>
       </section>
 
-      <section class="lg:col-span-4 glass-panel rounded-2xl p-lg shadow-sm">
+      <section class="lg:col-span-4 glass-panel rounded-2xl p-4 md:p-lg shadow-sm">
         <h3 class="font-h3 text-slate-800 dark:text-slate-100 mb-lg text-center">Distribusi Kesehatan</h3>
         <div class="space-y-md">
            <div class="relative pt-1">
@@ -140,7 +140,7 @@ export function renderDashboard() {
       
       <div class="receipt-row font-bold">
         <span>HEALTH (SOH)</span>
-        <span>: ${predictions.length > 0 ? predictions[0].soh : '-'}%</span>
+        <span>: ${predictions.length > 0 ? (predictions[0].soh || predictions[0].predictedSoh || '-') : '-'}%</span>
       </div>
       <div class="receipt-row font-bold">
         <span>SISA UMUR (RUL)</span>
